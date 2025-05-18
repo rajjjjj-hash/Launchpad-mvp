@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block title %}Founder Dashboard{% endblock %}
+{% block content %}
+<h1>Your Startups</h1>
+<a href="{{ url_for('startup_create') }}" class="btn btn-success mb-3">Create New Startup</a>
+{% if startups %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Company Name</th>
+      <th>Funding Ask</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for startup in startups %}
+    <tr>
+      <td>{{ startup.company_name }}</td>
+      <td>${{ "%.2f"|format(startup.funding_ask_amount) }} for {{ "%.2f"|format(startup.funding_ask_percent) }}%</td>
+      <td>
+        <a href="{{ url_for('startup_view', startup_id=startup.id) }}" class="btn btn-primary btn-sm">View</a>
+        <a href="{{ url_for('funding_simulation', startup_id=startup.id) }}" class="btn btn-secondary btn-sm">Funding</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>You have no startups yet. <a href="{{ url_for('startup_create') }}">Create one now</a>.</p>
+{% endif %}
+{% endblock %}

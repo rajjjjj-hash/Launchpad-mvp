@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+<h1>Leaderboard - Top Startups</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Startup</th>
+      <th>Valuation (USD)</th>
+      <th>Funding Received</th>
+      <th>Investor Interest</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i, entry in enumerate(leaderboard, start=1) %}
+    <tr>
+      <td>{{ i }}</td>
+      <td>{{ entry.startup.company_name }}</td>
+      <td>${{ "%.2f"|format(entry.valuation) }}</td>
+      <td>${{ "%.2f"|format(entry.funding_received) }}</td>
+      <td>{{ entry.investor_interest }}</td>
+      <td><a href="{{ url_for('startup_view', startup_id=entry.startup.id) }}" class="btn btn-sm btn-primary">Details</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

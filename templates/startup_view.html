@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block title %}{{ startup.company_name }}{% endblock %}
+{% block content %}
+<h1>{{ startup.company_name }}</h1>
+<p><strong>Vision:</strong> {{ startup.vision }}</p>
+<p><strong>Product Description:</strong> {{ startup.product_description }}</p>
+<p><strong>Market Size:</strong> {{ startup.market_size }}</p>
+<p><strong>Business Model:</strong> {{ startup.business_model }}</p>
+<p><strong>Funding Ask:</strong> ${{ "%.2f"|format(startup.funding_ask_amount) }} for {{ "%.2f"|format(startup.funding_ask_percent) }}%</p>
+
+{% if startup.pitch_deck_url %}
+<h3>Pitch Deck (URL Embed)</h3>
+<div class="ratio ratio-16x9">
+  <iframe src="{{ startup.pitch_deck_url }}" allowfullscreen></iframe>
+</div>
+{% elif startup.pitch_deck_filename %}
+<h3>Pitch Deck (PDF)</h3>
+<a href="{{ url_for('uploaded_file', filename=startup.pitch_deck_filename) }}" target="_blank" class="btn btn-outline-primary mb-3">Download PDF</a>
+<embed src="{{ url_for('uploaded_file', filename=startup.pitch_deck_filename) }}" type="application/pdf" width="100%" height="600px" />
+{% else %}
+<p>No pitch deck available.</p>
+{% endif %}
+
+{% if user %}
+  {% if user.role == 'founder' and owner %}
+    <a href="{{ url_for('funding_simulation', startup_id=startup.id) }}" class="btn btn-secondary mt-3">Manage Funding</a>
+  {% elif user.role == 'investor' %}
+    <a href="{{ url_for('funding_simulation', startup_id=startup.id) }}" class="btn btn-success mt-3">Funding Simulation & Invest</a>
+  {% endif %}
+{% endif %}
+<a href="{{ url_for('index') }}" class="btn btn-link mt-3">Back to all startups</a>
+{% endblock %}

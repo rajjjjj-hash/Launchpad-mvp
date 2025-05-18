@@ -1,0 +1,89 @@
+{% extends 'layout.html' %}
+{% block title %}Funding - {{ startup.company_name }}{% endblock %}
+{% block content %}
+<h1>Funding Simulation - {{ startup.company_name }}</h1>
+
+<h3>Current Round: {{ current_round.round_num }}</h3>
+<p>Total Raised: ${{ "%.2f"|format(current_round.amount_raised) }} | Equity Sold: {{ "%.2f"|format(current_round.equity_sold_percent) }}%</p>
+
+{% if user.role == 'investor' %}
+  <h4>Make an Investment Offer</h4>
+  <form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.amount_offered.label(class="form-label") }}
+      {{ form.amount_offered(class="form-control") }}
+      {% for err in form.amount_offered.errors %}
+      <div class="text-danger">{{ err }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.equity_offered.label(class="form-label") }}
+      {{ form.equity_offered(class="form-control") }}
+      {% for err in form.equity_offered.errors %}
+      <div class="text-danger">{{ err }}</div>
+      {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+  </form>
+{% endif %}
+
+<h4 class="mt-5">Offers in Current Round</h4>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Investor</th>
+      <th>Amount</th>
+      <th>Equity %</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for offer in offers %}
+      <tr>
+        <td>{{ offer.investor.username }}</td>
+        <td>${{ "%.2f"|format(offer.amount_offered) }}</td>
+        <td>{{ "%.2f"|format(offer.equity_offered_percent) }}%</td>
+        <td>{{ offer.status.title() }}</td>
+        <td>
+          {% if user.role == 'founder' and startup.owner_id == user.id and offer.status == 'pending' %}
+          <a href="{{ url_for('funding_offer_action', offer_id=offer.id, action='accept') }}" class="btn btn-success btn-sm">Accept</a>
+          <a href="{{ url_for('funding_offer_action', offer_id=offer.id, action='reject') }}" class="btn btn-danger btn-sm ms-1">Reject</a>
+          {% else %}
+          N/A
+          {% endif %}
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="text-center">No offers yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if user.role == 'founder' and startup.owner_id == user.id and cap_table %}
+<h4 class="mt-5">Cap Table Evolution Simulation</h4>
+{% for round in cap_table %}
+  <h5>Round {{ round.round_num }}</h5>
+  <p>Amount Raised: ${{ "%.2f"|format(round.amount_raised) }}, Equity Sold: {{ "%.2f"|format(round.equity_sold_percent) }}%, Equity Remaining: {{ "%.2f"|format(round.equity_left_percent) }}%</p>
+  <table class="table table-bordered mb-4">
+    <thead>
+      <tr>
+        <th>Investor</th>
+        <th>Equity %</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for investor, equity in round.investor_share.items() %}
+      <tr>
+        <td>{{ investor }}</td>
+        <td>{{ "%.2f"|format(equity) }}%</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endfor %}
+{% endif %}
+
+<a href="{{ url_for('startup_view', startup_id=startup.id) }}" class="btn btn-link mt-3">Back to Startup</a>
+{% endblock %}

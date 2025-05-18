@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% block title %}Create Startup{% endblock %}
+{% block content %}
+<h1>Create a New Startup</h1>
+<form method="POST" enctype="multipart/form-data" novalidate>
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.company_name.label(class="form-label") }}
+    {{ form.company_name(class="form-control") }}
+    {% for error in form.company_name.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.vision.label(class="form-label") }}
+    {{ form.vision(class="form-control", rows="3") }}
+    {% for error in form.vision.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.product_description.label(class="form-label") }}
+    {{ form.product_description(class="form-control", rows="3") }}
+    {% for error in form.product_description.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.market_size.label(class="form-label") }}
+    {{ form.market_size(class="form-control") }}
+    {% for error in form.market_size.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.business_model.label(class="form-label") }}
+    {{ form.business_model(class="form-control") }}
+    {% for error in form.business_model.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3">
+    {{ form.pitch_deck_url.label(class="form-label") }}
+    {{ form.pitch_deck_url(class="form-control") }}
+    {% for error in form.pitch_deck_url.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+    <small class="form-text text-muted">Or upload a PDF pitch deck below.</small>
+  </div>
+
+  <div class="mb-3">
+    {{ form.pitch_deck_file.label(class="form-label") }}
+    {{ form.pitch_deck_file(class="form-control") }}
+    {% for error in form.pitch_deck_file.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3">
+    {{ form.funding_ask_amount.label(class="form-label") }}
+    {{ form.funding_ask_amount(class="form-control") }}
+    {% for error in form.funding_ask_amount.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3">
+    {{ form.funding_ask_percent.label(class="form-label") }}
+    {{ form.funding_ask_percent(class="form-control") }}
+    {% for error in form.funding_ask_percent.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Create Startup</button>
+</form>
+{% endblock %}

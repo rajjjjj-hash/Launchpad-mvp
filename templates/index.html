@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>All Startups</h1>
+{% if startups %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Vision</th>
+      <th>Product</th>
+      <th>Market Size</th>
+      <th>Founder</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for startup in startups %}
+    <tr>
+      <td>{{ startup.company_name }}</td>
+      <td>{{ startup.vision|truncate(60) }}</td>
+      <td>{{ startup.product_description|truncate(60) }}</td>
+      <td>{{ startup.market_size }}</td>
+      <td>{{ startup.owner.username }}</td>
+      <td>
+        <a href="{{ url_for('startup_view', startup_id=startup.id) }}" class="btn btn-sm btn-primary">View</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No startups available yet.</p>
+{% endif %}
+{% endblock %}

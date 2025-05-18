@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block title %}Score {{ startup.company_name }}{% endblock %}
+{% block content %}
+<h1>Scoring & Feedback for {{ startup.company_name }}</h1>
+<form method="POST" novalidate>
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.team_score.label(class="form-label") }}
+    {{ form.team_score(class="form-control") }}
+    {% for err in form.team_score.errors %}
+    <div class="text-danger">{{ err }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.product_score.label(class="form-label") }}
+    {{ form.product_score(class="form-control") }}
+    {% for err in form.product_score.errors %}
+    <div class="text-danger">{{ err }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.market_score.label(class="form-label") }}
+    {{ form.market_score(class="form-control") }}
+    {% for err in form.market_score.errors %}
+    <div class="text-danger">{{ err }}</div>
+    {% endfor %}
+  </div>
+  <div class="mb-3">
+    {{ form.feedback.label(class="form-label") }}
+    {{ form.feedback(class="form-control", rows="4") }}
+  </div>
+  <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+</form>
+{% endblock %}
