@@ -1,7 +1,9 @@
 # Launchpad-mvp
 A GenAI-powered startup funding simulation &amp; pitch platform.
 
-https://laughing-rotary-phone-5grx5vr79wg924v5-5000.app.github.dev/
+## 🌐 Live Project
+👉 [LaunchPad is live here](https://launchpad-mvp.onrender.com)
+
 
 Login Credentials:
 Founder: alice / password
