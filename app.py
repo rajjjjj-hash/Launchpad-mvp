@@ -557,7 +557,9 @@ def seed_data():
 
     print("Seed data inserted. Users: alice/bob (founders), carol/dave (investors) - all password: 'password'")
 
-if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True,port=5008)
+import os
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
